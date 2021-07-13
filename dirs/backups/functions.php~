@@ -1,0 +1,465 @@
+﻿<?php
+
+/* LOAD & CACHE BUST PARENT THEME STYLES
+  ================================================== */
+  function divi_parent_enqueue_styles() {
+    wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
+    wp_enqueue_style('animatecss', 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+  } add_action( 'wp_enqueue_scripts', 'divi_parent_enqueue_styles' );
+  
+  
+    add_action('wp_enqueue_scripts', 'maali_enqueue');
+    function maali_enqueue() {
+        wp_enqueue_script( 'maali', 'https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js');
+
+        wp_register_script('dd-slick', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js', array(), '', 'all');
+        wp_enqueue_script('dd-slick');
+
+        wp_register_script('my-match-height-js', get_stylesheet_directory_uri() . '/assets/jquery.matchHeight-min.js', array(), '', 'all' );
+        wp_enqueue_script('my-match-height-js');
+
+        wp_enqueue_script( 'custom-script', get_stylesheet_directory_uri() . '/script.js');
+    }
+
+    /* UNLOAD CHILD THEME STYLE, RELOAD, CACHE BUST
+  ================================================== */
+  function child_style_script() {
+    wp_dequeue_style( 'dashicons' );
+    wp_dequeue_style( 'wp-block-library' );
+    wp_dequeue_style( 'wp-block-library-theme' );
+
+    wp_register_style('styleglobal', get_stylesheet_directory_uri() . '/style.css', array('parent-style'), false, null);
+
+  } add_action( 'wp_enqueue_scripts', 'child_style_script', 9999);
+  
+  /**
+ * Blog Shortcode
+ */
+function blog_shortcode(){
+
+  $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
+  $args = array(
+    'post_type'         =>  'post',
+    'posts_per_page'    =>  2, 
+    'order'             =>  'DESC',
+    'orderby'           =>  'date',
+    'paged'             =>  $paged
+  );
+  $query = new WP_Query($args);
+
+  if($query->have_posts()) : $output;
+
+    $output = '<div class="blog-wrapper">';
+
+    while ($query->have_posts()) : $query->the_post();
+
+      if ( has_post_thumbnail() ) {
+        $featured_img = get_the_post_thumbnail_url($post->ID, 'full');
+      }
+
+      $output .= '<div class="blog-row">';
+        $output .= '<div class="blog-img" style="background-image: url('. $featured_img .')"></div>';
+        $output .= '<div class="blog-info-right">';
+          $output .= '<div class="blog-date text-rotate">'. get_the_date('F j, Y') .'</div>';
+          $output .= '<div class="blog-info">';
+          $output .= '<div class="blog-title"><h2><a href="' . get_the_permalink() . '">' . get_the_title() . '</a></h2></div>';
+          $output .= '<div class="blog-excerpt">' . get_the_excerpt() . '</div>';
+          $output .= '<a href="' . get_the_permalink() . '" class="et_pb_button">Read more</a>';
+          $output .= '</div>';
+        $output .= '</div>';
+      $output .= '</div>';
+
+    endwhile; 
+
+    $output .= '</div>';
+    
+     $args_pagi = array(
+      'base' => add_query_arg( 'paged', '%#%' ),
+      'total' => $query->max_num_pages,
+      'current' => $paged,
+      'prev_text'  => '<span></span>',
+      'next_text'  => '<span></span>',
+    );
+
+    if( $query->max_num_pages > 1 ):
+
+      $output .= '<div class="post-nav d-flex justify-center">';
+
+      $output .= paginate_links( $args_pagi);
+
+      $output .= '</div>';
+
+    endif;
+
+  else:
+
+      $output .= '<p>Sorry, there are no posts to display</p>';
+
+  endif;
+
+  wp_reset_postdata();
+
+  return $output;
+
+
+}
+add_shortcode('blog', 'blog_shortcode');
+
+/**
+ * Latest articles shortcode
+ */
+function share_article_shortcode(){
+
+  $output = '<div class="et_share_bar">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=' . get_the_permalink() . '" class="share-url" target="_blank"><span class="icon-facebook"></span></a>
+  <a href="https://twitter.com/intent/tweet?text=' . get_the_permalink() . '" class="share-url" target="_blank"><span class="icon-twitter"></span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=' . get_the_permalink() . '" class="share-url" target="_blank"><span class="icon-linkedin"></span></a>
+  
+</div>';
+
+  return $output;
+}
+add_shortcode('share_article', 'share_article_shortcode');
+
+/**
+ * Latest articles shortcode
+ */
+function latest_articles_shortcode(){
+
+
+  $args = array(
+      'post_type'         =>  'post',
+      'order'             =>  'DESC',
+      'orderby'           =>  'date',
+      'posts_per_page'    =>  2,
+      'post__not_in'      => array( get_the_ID() )
+  );
+
+  $query = new WP_Query($args);
+
+  if($query->have_posts()) : $output;
+
+    $output .= '<div class="single-latest-articles">';
+
+    while ($query->have_posts()) : $query->the_post();
+
+      if ( has_post_thumbnail() ) {
+        $featured_img = get_the_post_thumbnail_url($post->ID, 'full');
+      } 
+
+      $output .= '<div class="post-item">';
+      $output .= '<div class="post-left"><div class="post-img" style="background-image: url('. $featured_img .');"></div></div>';
+      $output .= '<div class="post-right">';
+      $output .= '<div class="post-title"><a href="' . get_the_permalink() . '">' . get_the_title() . '</a></div>';
+      $output .= '<div class="post-date">'. get_the_date( 'F d, Y' ) . $post->ID . '</div>';
+      $output .= '</div>';
+      $output .= '</div>';
+
+    endwhile; global $wp_query;
+
+    $output .= '</div>';
+
+  else:
+
+    $output .= '<p>Sorry, there are no posts to display</p>';
+
+  endif;
+
+  wp_reset_postdata();
+
+  return $output;
+}
+add_shortcode('latest_articles', 'latest_articles_shortcode');
+
+
+
+
+
+
+
+
+
+
+/* NEWS AND PARTNERSHIPS LISTS 
+------------------------------ */
+
+add_shortcode('news_puglications-articles', 'news_puglications_articles');
+
+function news_puglications_articles() {
+    ob_start(); ?>
+    <?php 
+        $show_filters = get_field('show_filter_tabs_1', 'option'); 
+        if($show_filters == 'yes'): ?>
+   <div class="newspub__list_heading">
+    <div class="filter">
+      <button data-tag="12">ALL NEWS</button> <!-- Please change the data value according to the current post type cat since the dev site is not the same as the live site  -->
+      <button data-tag="13">ALL PUBLICATIONS</button>
+    </div>
+  </div>
+  <div class="newspub__list_wrap newspub__list_wrap--newspub">
+    <span class="ajaxloader"></span>
+  </div>
+    <?php elseif($show_filters == 'no'): ?>
+  <div class="newspub__list_wrap newspub__list_wrap--newspub">
+    <span class="ajaxloader"></span>
+  </div>
+    <?php endif; ?>
+
+  <?php return ob_get_clean();
+}
+
+add_action( 'wp_ajax_getNewsPubList', 'getNewsPubList' );
+add_action( 'wp_ajax_nopriv_getNewsPubList', 'getNewsPubList' );
+
+function getNewsPubList() {
+  $page         = $_POST['curr_page'];
+  $cat          = $_POST['cat'];
+  $search       = $_POST['search'];
+  $display_num  = 4;
+
+  $args = array(
+    'post_type'       => 'post',
+    'posts_per_page'  => -1,
+    'orderby'         => 'date',
+    'order'           => 'DESC',
+    'category__in'    => ( $cat != "" ) ? array($cat) : array(11,12,13),
+    's'               => $search,
+    'post_status' 	  => 'publish',
+  );
+
+  $result = get_posts( $args );
+  $listings_found = count($result);
+  $totalpage = ceil($listings_found/$display_num);
+  // print_r($totalpage);
+  $new_search = array_slice($result, ($page*$display_num), $display_num);
+  
+  ob_start();
+  if( !empty($new_search) ) {
+    ?>
+      <span class="ajaxloader"></span>
+      <div class="newspub__items" data-totalcount=<?=$listings_found?>>
+        <?php foreach( $new_search as $post ): 
+        $pid      = $post->ID;
+        $date     = get_the_date('d M Y', $pid);
+        $perm			= get_the_permalink($pid);
+        $title		= get_the_title($pid);
+        $img	    = get_the_post_thumbnail_url($pid);
+        $cat      = get_the_category($pid);
+        $excerpt  = get_the_excerpt($pid);
+        $clippedExcerpt = substr($excerpt, 0, 415);
+        $excerptLen = mb_strlen($excerpt);
+        $trimmedExcerpt = ($excerptLen > 415) ? $clippedExcerpt."..." : $excerpt;
+        ?>
+        <div class="newspub__item <?= (has_category(87, $pid)) ? 'archived' : '' ?>">
+          <div class="thumb">
+            <span class="image__wrap"><img src="<?=$img;?>"/></span>
+          </div>
+          <div class="details">
+            <span class="date"><?=$date;?></span>
+            <h3><?=$title;?></h3>
+            <p class="trimmed_excerpt"><?=$trimmedExcerpt;?></p>
+            <!-- a href="<?=$perm;?>" class="et_pb_button">Read more</a -->
+          </div>
+        </div>
+            <script>
+                (function($) {
+                    function thematcheight() {
+                        $('.newspub__items').each(function(e) { 
+                            $(this).children('.newspub__item').find('.trimmed_excerpt').matchHeight(); 
+                        });
+                    }
+                    thematcheight();
+                })(jQuery);
+            </script>
+        <?php endforeach; ?>
+      </div>
+      <div class="pagination">
+            <button class="arrow left <?= ($page == 0) ? 'disabled' : ''; ?>" data-page=<?=($page == 0) ? 0 : $page-1;?>>
+            </button>
+        <ul class="pages">
+          <?php for( $x=0; $x<$totalpage; $x++ ): ?>
+          <li><button class="page <?=($page == $x) ? 'current' : ''?>" data-page=<?=$x?>><?=$x+1?></button></li>
+          <?php endfor; ?>
+        </ul>
+            <button class="arrow right <?= ($page+1 == $totalpage) ? 'disabled' : ''; ?>" data-page=<?=($page+1 == $totalpage) ? $totalpage-1 : $page+1;?>>
+            </button>
+      </div>
+    <?php
+  }
+  else {
+    ?>
+      <div class="ajaxloader"></div>
+      <div class="products no-results">
+        <h4>No matching articles found</h4>
+      </div>
+    <?php
+  }
+  echo ob_get_clean();
+  die();
+}
+
+
+
+
+
+
+
+
+/* PROJECTS LISTS 
+----------------- */
+
+add_shortcode('blog-articles', 'blog_articles');
+
+function blog_articles() {
+  // $blogheading = get_field('blog_heading', get_the_ID());
+  ob_start(); ?>
+
+  <div class="prodj__list_heading">
+    <div class="filter">
+      <button data-tag="8">COMPLETED</button> <!-- Please change the data value according to the current post type cat since the dev site is not the same as the live site  -->
+      <button data-tag="9">CURRENT</button>
+      <button data-tag="10">FUTURE</button>
+    </div>
+  </div>
+  <div class="prodj__list_wrap prodj__list_wrap--prodj">
+    <span class="ajaxloader"></span>
+  </div>
+
+  <?php return ob_get_clean();
+}
+
+add_action( 'wp_ajax_getProdjectList', 'getProdjectList' );
+add_action( 'wp_ajax_nopriv_getProdjectList', 'getProdjectList' );
+
+function getProdjectList() {
+  $page         = $_POST['curr_page'];
+  $cat          = $_POST['cat'];
+  $search       = $_POST['search'];
+  $display_num  = 6;
+
+  $args = array(
+    'post_type'       => 'post',
+    'posts_per_page'  => -1,
+    'orderby'         => 'date',
+    'order'           => 'DESC',
+    'category__in'    => ( $cat != "" ) ? array($cat) : array(7,8,9,10),
+    's'               => $search,
+    'post_status' 	  => 'publish',
+  );
+
+  $result = get_posts( $args );
+  $listings_found = count($result);
+  $totalpage = ceil($listings_found/$display_num);
+  // print_r($totalpage);
+  $new_search = array_slice($result, ($page*$display_num), $display_num);
+  
+  ob_start();
+  if( !empty($new_search) ) {
+    ?>
+      <span class="ajaxloader"></span>
+      <div class="prodj__items" data-totalcount=<?=$listings_found?>>
+        <?php foreach( $new_search as $post ): 
+        $pid      = $post->ID;
+        $date     = get_the_date('d M Y', $pid);
+        $perm			= get_the_permalink($pid);
+        $title		= get_the_title($pid);
+        $img	    = get_the_post_thumbnail_url($pid);
+        $cat      = get_the_category($pid);
+        $excerpt  = get_the_excerpt($pid);
+        $clippedExcerpt = substr($excerpt, 0, 415);
+        $excerptLen = mb_strlen($excerpt);
+        $trimmedExcerpt = ($excerptLen > 415) ? $clippedExcerpt."..." : $excerpt;
+        ?>
+        <div class="prodj__item <?= (has_category(87, $pid)) ? 'archived' : '' ?>">
+          <div class="thumb">
+            <span class="image__wrap"><img src="<?=$img;?>"/></span>
+          </div>
+          <div class="details">
+            <!-- <span class="date"></span> -->
+            <h3><?=$title;?></h3>
+            <p class="trimmed_excerpt"><?=$trimmedExcerpt;?></p>
+            <!-- a href="<?=$perm;?>" class="et_pb_button">Read more</a -->
+          </div>
+        </div>
+            <script>
+                (function($) {
+                    function thematcheight() {
+                        $('.prodj__items').each(function(e) { 
+                            $(this).children('.prodj__item').find('.trimmed_excerpt').matchHeight(); 
+                        });
+                    }
+                    thematcheight();
+                })(jQuery);
+            </script>
+        <?php endforeach; ?>
+      </div>
+      <div class="pagination">
+          <button class="arrow left <?= ($page == 0) ? 'disabled' : ''; ?>" data-page=<?=($page == 0) ? 0 : $page-1;?>>
+          </button>
+        <ul class="pages">
+          <?php for( $x=0; $x<$totalpage; $x++ ): ?>
+          <li><button class="page <?=($page == $x) ? 'current' : ''?>" data-page=<?=$x?>><?=$x+1?></button></li>
+          <?php endfor; ?>
+        </ul>
+          <button class="arrow right <?= ($page+1 == $totalpage) ? 'disabled' : ''; ?>" data-page=<?=($page+1 == $totalpage) ? $totalpage-1 : $page+1;?>>
+          </button>
+      </div>
+    <?php
+  }
+  else {
+    ?>
+      <div class="ajaxloader"></div>
+      <div class="products no-results">
+        <h4>No matching articles found</h4>
+      </div>
+    <?php
+  }
+  echo ob_get_clean();
+  die();
+}
+
+
+/**
+ * Add Custom Options for our Clients to weather they want to activated Posts tab filters
+ **/
+
+if( function_exists('acf_add_options_page') ) {
+    acf_add_options_page(array(
+        'page_title' 	=> __('Posts Filters Tabs'),
+        'menu_title' 	=> __('Filters Tabs Activation'),
+        'menu_slug' 	=> 'activate-posts-filters',
+        'capability' 	=> 'edit_posts',
+        //'parent_slug'   => 'themes.php',
+        'parent_slug'   => 'edit.php',
+        'redirect'	=> false
+    ));
+}
+
+
+
+/**
+ * Remove menus in WP Admin
+ **/
+
+function remove_menus() {
+  remove_menu_page( 'edit.php?post_type=project' );    //Projects
+}
+add_action( 'admin_menu', 'remove_menus' );
+
+
+
+
+
+
+
+
+
+
+// Debugging purposes WP
+// =====================
+
+add_action('wp_head', 'get_what_page' );
+function get_what_page() {
+    global $post;
+    echo print_r('<span class="athena">' . get_page($post->id)->post_type . ' <a href="' . get_bloginfo("url") . '/wp-admin/post.php?post=' . get_the_ID($post->id)  . '&action=edit">wp-admin edit</a>' . ' ' . get_the_ID($post->id) ) . '</span>';
+}

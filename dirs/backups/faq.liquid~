@@ -1,0 +1,297 @@
+﻿<div class="section container w-line">
+
+  <div class="row align-items-center">
+
+    <div class="col is-fancyhead">
+
+      <div class="section-head">
+        <h2 class="section-title fancy fancy-left-only">General FAQ about Barista School Perth</h2>
+      </div> <!-- end of section head -->
+
+      <div class="row">
+
+        <div class="col-sm-4 col-lg">
+          <div class="icon-box text-center is-point">
+            <a href="#ab-bsp">
+              <div class="icon-img">
+                <img src="{{ 'faq-icon-1.png' | asset_url }}" alt="">
+              </div>
+              <div class="icon-details">
+                <h4 class="icon-subtitle dark">about bsp</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-lg">
+          <div class="icon-box text-center is-point">
+            <a href="#bsp-course">
+              <div class="icon-img">
+                <img src="{{ 'faq-icon-2.png' | asset_url }}" alt="">
+              </div>
+              <div class="icon-details">
+                <h4 class="icon-subtitle dark">bsp courses</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-lg">
+          <div class="icon-box text-center is-point">
+            <a href="#bsp-book">
+              <div class="icon-img">
+                <img src="{{ 'faq-icon-3.png' | asset_url }}" alt="">
+              </div>
+              <div class="icon-details">
+                <h4 class="icon-subtitle dark">bsp bookings</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-lg">
+          <div class="icon-box text-center is-point">
+            <a href="#bsp-class">
+              <div class="icon-img">
+                <img src="{{ 'faq-icon-4.png' | asset_url }}" alt="">
+              </div>
+              <div class="icon-details">
+                <h4 class="icon-subtitle dark">bsp attending a class</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-lg">
+          <div class="icon-box text-center is-point">
+            <a href="#employment">
+              <div class="icon-img">
+                <img src="{{ 'faq-icon-5.png' | asset_url }}" alt="">
+              </div>
+              <div class="icon-details">
+                <h4 class="icon-subtitle dark">employment</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-lg">
+          <div class="icon-box text-center is-point">
+            <a href="#gift">
+              <div class="icon-img">
+                <img src="{{ 'faq-icon-6.png' | asset_url }}" alt="">
+              </div>
+              <div class="icon-details">
+                <h4 class="icon-subtitle dark">bsp gift vouchers</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="faq-table">
+
+            <div class="card">
+              <div class="card-header" id="ab-bsp-h">
+                <h5 class="title-strip">about bsp</h5>
+              </div>
+
+              <div id="ab-bsp">
+                <div class="card-body">
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#ab-bsp-1">Why choose Barista School Perth?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="ab-bsp-1" class="collapse">Jessie’s Café is a successful business in Myaree and home to Barista School Perth. We also roast all our Jessie’s Café coffee beans locally on-site next-door. Here at BSP, you will gain first-hand experience from actual barista’s and roasters who are up-to-date and knowledgeable about the cafe industry and products.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#ab-bsp-2">Is Barista School Perth Inclusive?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="ab-bsp-2" class="collapse">Yes, we pride ourselves on delivering courses to suit all ability levels. The courses are conducted at Jessie’s Café which holds an approved Public Building Licence. Wheelchair access and disabled toilets are available on the premises.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#ab-bsp-3">How many participants in a class?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="ab-bsp-3" class="collapse">As a boutique Barista School, all our courses are limited to 8 participants to ensure our qualified trainers can give the right amount of personal attention in a relaxed and fun environment.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#ab-bsp-4">How many trainers?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="ab-bsp-4" class="collapse">As class numbers are small, we have one specialised trainer per class to deliver the course.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#ab-bsp-5">How many people per machine?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="ab-bsp-5" class="collapse">We have four commercial coffee machines [2x participants per machine] available to ensure you will have plenty of hands-on time to familiarise yourself with the machinery and gain practical experience.</p>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- end of about bsp -->
+
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h5 class="title-strip">bsp courses</h5>
+              </div>
+
+              <div id="bsp-course">
+                <div class="card-body">
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-course-1">I have little or no coffee making experience / skills. What class should I choose?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-course-1" class="collapse">To gain the most knowledge and practical experience, we recommend you complete our Fast introduction to the coffee world, our Coffee Fundamentals course would be the perfect selection and only runs for half a day. Track barista course, which runs for 1 full day. If you are time poor or chasing more of a basic</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-course-2">I want to work as a barista! What do I need to do?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-course-2" class="collapse">To work as a barista, we recommend that you complete the Fast Track barista course. This course covers the basics including origins of coffee and the roasting process, while also covering the milk texturing process, espresso brewing and grinder adjustment, and finally covering the skills and strategies needed for working in a busy café environment.<br><br> If you want to give yourself the edge with perspective employers and improve your coffee making ability, you may like to compliment this class with our Latte Art workshop (please note the Fast Track or Coffee Fundamentals is a pre-requisite to the Latte Art workshop if you have no prior coffee industry experience).</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-course-3">Do I receive a certificate/recognition of completion?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-course-3" class="collapse">A certificate of completion will be issued for all participants completing any of our Barista School Perth courses, and will be handed to you at the end of class.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-course-4">Can I complete both the Coffee Fundamentals and Latte Art course in 1 day?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-course-4" class="collapse">If the Coffee Fundamentals course and the Latte Art workshop are being held on the same day, then this combination would be possible, pending availability. Our Fast Track barista course is run over a full day, so must be completed on its own.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-course-5">How young is too young to attend a class?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-course-5" class="collapse">We take children high school aged and above. It really is a matter of maturity and interest. If you are unsure about your child attending, please do not hesitate to contact us to discuss.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-course-6">Will I be able to get a job after the completion of the course?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-course-6" class="collapse">This depends on how good you are at making coffee! We don’t offer job placements, but good baristas are always in demand worldwide. Like any new skill, practice makes perfect.<br><br>We recommend that anyone looking to work in the industry completes both the Fast Track barista course, followed by the Latte Art workshop.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-course-7">Are you an accredited training organisation?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-course-7" class="collapse">We have thought about it and decided against it. A registered training organisation requires that you be taught by a qualified teacher. We think that you should be taught to make coffee by an experienced BARISTA. Our Barista’s are passionate and experienced coffee lovers. In fact, we would go as far as to say they are a little obsessed with coffee. The result is classes taught by those in the know!</p>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- end of bsp courses -->
+
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h5 class="title-strip">BSP Bookings</h5>
+              </div>
+
+              <div id="bsp-book">
+                <div class="card-body">
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-book-1">I have booked through your website, will I receive a confirmation email?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-book-1" class="collapse">Yes, an email confirmation will be sent after you have completed your booking. Please note, a friendly reminder email will be sent prior to your class. We will endeavour to send you a courtesy reminder email just prior to your class, however, please keep a copy of your order and note your class time and date. Ultimately it is your responsibility to ensure you attend your class (as per the <a href="/pages/terms-and-conditions">Terms &amp; Conditions</a>).</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-book-2">I have booked via Red Balloon, what confirmation will I receive?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-book-2" class="collapse">You will receive a confirmation email directly from Red Balloon confirming the class date and time (as per your preferences and subject to availability). Please keep this confirmation. We will likely send you a reminder email close to the class date, however, ultimately it is your responsibility to remember! <br><br> Red Balloon bookings are subject to our <a href="/terms-and-conditions">Terms and Conditions</a>. All changes will need to be made directly through Red Balloon.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-book-4">How do I pay for my class?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-book-4" class="collapse">All classes must be booked and paid for online through the website prior to attending the class. Payment may be made via debit/credit card using the platform provided on the website. Payment on the day of the class will not be accepted.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-book-5">What is your cancellation/refund policy?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-book-5" class="collapse">As per our <a href="/pages/terms-and-conditions">Terms and Conditions:</a><br><br>Our classes are non - refundable.<br><br>Changes to your booking can be made up to 48 hours before your class. You must email sales@baristaschoolperth. Please include your full name and the class you were attending in your email.<br><br>Cancellations less than 48 hours before the scheduled class will be considered a forfeit.<br><br>We do require a minimum number of participants to run each class. If we, unfortunately, must cancel a class, we will reschedule you in the same class at a time chosen by you (subject to availability).<br><br>Please note this policy does not apply for group bookings or classes scheduled specifically to meet the needs of a group or individual.<br><br>Classes purchased on sale are transferable (if made 48 hours or more before your scheduled class) but additional charges will likely apply.<br><br>Café staff and Barista School Trainers cannot reschedule your booking. You need to contact 1300 887 677 and leave a voice message or email <a href="mailto:sales@baristaschoolperth.com.au">sales@baristaschoolperth.com.au</a></p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-book-6">Can I speak to someone about my booking?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-book-6" class="collapse">
+                      Of course! Our administration hours are 9am- 3pm Monday to Friday. Our telephone number is 1800 887 677.
+                      <br><br>You can also email us at <a href="mailto:sales@baristaschoolperth.com.au">sales@baristaschoolperth.com.au</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- end of BSP Bookings -->
+
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h5 class="title-strip">BSP Attending a Class</h5>
+              </div>
+
+              <div id="bsp-class">
+                <div class="card-body">
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-class-1">Do I need to bring anything to my class?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-class-1" class="collapse">No! A light morning tea (for Coffee Fundamentals & Fast Track barista courses only), water, course notes (for you to take with you) and pens are provided. <br><br>Please remember to wear enclosed shoes – our coffee is hot and your feet are important!</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-class-2">Where are you located?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-class-2" class="collapse">Our training room is located at the rear of Jessie’s Café (Unit 2 / 8 Hayden Court, Myaree, WA). Big hint – we are at the rear of the big Bunnings Warehouse.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-class-3">Is there parking available?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-class-3" class="collapse">We are lucky enough to have ample street and verge parking in Hayden Court and surrounding streets. We would appreciate if you left the bays directly outside Jessie’s Café free for our Café customers since you will be joining us for some time. Thanks in advance!</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-class-4">I have arrived at Jessie’s Café 15 minutes before my class – what now?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-class-4" class="collapse">Please go to the counter and let our Café staff know that you have arrived. The Café staff will check off your name on the attendance list. Our Café staff will also provide class participants with a Jessie’s Café coffee of their choice to enjoy whilst they wait for the class to start.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-class-5">I am running late for my class – what should I do?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-class-5" class="collapse">Firstly – relax, we get it, it happens to us all from time to time! If you get a chance, we really appreciate you sending the barista trainer a text message on 0407 715 229. Please do not try to call or email. Our Barista Trainers will be busy preparing for a class or teaching your future fellow classmates, so they won’t be able to talk or check emails.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#bsp-class-6">I can’t attend my scheduled class, what should I do?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="bsp-class-6" class="collapse">Please see our <a href="">Terms and Conditions.</a></p>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- end of BSP Attending a Class -->
+
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h5 class="title-strip">Employment</h5>
+              </div>
+
+              <div id="employment">
+                <div class="card-body">
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#employment-1">I would like work experience as a barista and / or in a café after completing my course, can I undertake work experience at Jessie’s Café?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="employment-1" class="collapse">
+                      Unfortunately, we are unable to take on people for work experience at Jessie’s Cafe. We have so many amazing potential baristas coming through our Barista School we could not possibly single out just a few. <br><br>The certificate you receive at the end of your training is widely recognised and we would encourage you to promote your completion of this course to potential work experience employers. Don’t forget to put that you have completed courses at Barista School Perth on your resume!</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#employment-2">I am looking for Barista’s to work in my café can Barista School Perth help?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="employment-2" class="collapse">We do not offer a job matching service, but we can suggest that you advertise your placement on the FaceBook page ‘WA Baristas’ and request that those who have completed training at Barista School Perth apply to you directly.</p>
+                  </div>
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#employment-3">Does Barista School Perth keep a list of employers looking for Baristas?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="employment-3" class="collapse">No, we do not. We encourage participants to look at the ‘WA Barista’s’ Facebook page and perhaps even advertise on there that they are seeking employment.</p>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- end of Employment -->
+
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h5 class="title-strip">BSP GIFT VOUCHERS</h5>
+              </div>
+
+              <div id="gift">
+                <div class="card-body">
+                  <div class="text-group">
+                    <h5 class="head collapsed" data-toggle="collapse" data-target="#gift-1">I have a gift voucher; how do I book?<i class="fa fa-chevron-down"></i></h5>
+                    <p id="gift-1" class="collapse">Lucky you! All gift vouchers can be redeemed on our website. Please enter the code when prompted at payment. Ensure the class you have added to your cart is the same class or amount listed on your voucher. <br><br>If you have any problems redeeming your voucher please do not hesitate to contact us on 1300 887 677 or via email <a href="mailto:sales@baristaschoolperth.com.au">sales@baristaschoolperth.com.au</a> <br><br>All classes booked using a Gift Voucher are subject to our <a href="/pages/terms-and-conditions">Terms and Conditions</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- end of BSP GIFT VOUCHERS -->
+
+          </div> <!-- end of Table row -->
+        </div> <!-- end of Table col -->
+      </div> <!-- end of FAQ Table -->
+
+    </div> <!-- end of is-fancyhead -->
+
+  </div> <!-- end wrapper -->
+
+  <div class="row my-5">
+    <div class="col">
+      <p>If you have any other questions or enquiries please don’t hesitate to get in contact with us, using our <a href="/pages/contact">contact page</a>.</p>
+    </div>
+  </div> <!-- end of my-5 -->
+
+</div>
+
+{% schema %}
+{
+"name": "FAQ page",
+"settings": []
+}
+{% endschema %}

@@ -1,0 +1,1115 @@
+<script>
+
+  var productHandle = "{{ product.handle }}";
+  
+  var mycart = {{ cart | json}};
+  console.log("my cart", mycart);
+  function defer2(method) {
+    if (window.jQuery) {
+      method();
+    } else {
+      setTimeout(function() { defer2(method) }, 50);
+    }
+  }
+  
+  function getCartStuff(){
+    var foundInCart = false;   
+    jQuery.get(location.href, function(data){
+        var h = $(data);
+        var t = h.find(".booking-form").text();
+        if(t.indexOf('This product is already in your cart.') > -1)
+        {
+          var p = '<p id="booking-guard-{{ product.handle }}">This product is already in your cart.... <a href="/cart">View cart</a>.</p>';
+          $(".booking-form").html(p);
+          foundInCart = true;
+          $('#booking-guard-{{ product.handle }}').closest('form[action^="/cart/add"]').find('input:submit, button:submit, .hide-if-in-cart').hide();
+        }
+      }); 
+  }
+  
+  defer2(getCartStuff);
+  
+  
+  
+//   var justaddedReload = false;
+//   var hasReloaded = localStorage.getItem('hasReloaded');
+//   if(hasReloaded != "true")
+//   {
+//     localStorage.setItem('hasReloaded', "true");
+//     console.log("reloading page");
+//     justaddedReload = true;
+//     //location.reload();
+//   }
+  
+//   if(!justaddedReload)
+//   {
+//   window.addEventListener("unload", function(event) { 
+  
+//     console.log("removing reload");
+//   	localStorage.removeItem("hasReloaded");
+  
+//   });
+//   }
+  
+</script>
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+
+<meta itemprop="name" content="{{ product.title }}{% unless product.has_only_default_variant %} - {{ current_variant.title }}{% endunless %}">
+<meta itemprop="url" content="{{ shop.url }}{{ current_variant.url }}">
+<meta itemprop="brand" content="{{ product.vendor }}">
+<meta itemprop="image" content="{{ featured_image | img_url: '600x600' }}">
+<meta itemprop="description" content="{{ product.description | strip_html | escape }}">
+
+{% for tag in product.tags %}
+
+<!-- THIS IS FOR THE BUNDLE DO NOT TOUCH GO TO THE ELSE SECTION -->
+
+{% if tag == 'bundle' %}
+<div class="content">
+  <div class="section container w-line">
+    <div class="row">
+      <div class="col">
+        <div class="head-feature">
+
+          {% for collection in collections %}
+          {% if product.title == collection.title %}
+
+          <div class="feature-image">
+            <img src="{{ collection.image | img_url: '480x480' }}" alt="{{ collection.image.alt | escape }}"
+                 data-product-featured-image>
+          </div>
+
+          {% endif %}
+          {% endfor %}
+
+          <div class="feature-details ml-md-5">
+
+            {% for collection in collections %}
+
+            {% if product.title == collection.title %}
+
+            <h3 class="main-title">{{ product.title | uppercase }}</h3>
+
+            {% for product in collection.products %}
+
+            {% for variant in product.variants %}
+
+            <div class="row">
+              <div class="col-sm-6">
+                <h4 class="meta">course</h4>
+                <h3 class="meta-value">{{ product.title }}</h3>
+              </div>
+
+              <div class="col-sm-3">
+                <h4 class="meta">duration</h4>
+                <h3 class="meta-value">{{ variant.option1 }}</h3>
+              </div>  
+
+              <div class="col-sm-3">
+                <h4 class="meta">cost per person</h4>
+                <h3 class="meta-value">{{ variant.price | money }}</h3>
+
+                {% if variant.compare_at_price_max > variant.price %}
+                <span class="visually-hidden" data-compare-text>{{ 'variant.regular_price' | t }}</span>
+                <s data-compare-price>
+                  {% if variant.compare_at_price > variant.price %}
+                  {{ variant.compare_at_price | money }}
+                  {% endif %}
+                </s>
+                {% endif %}
+
+              </div>
+            </div>
+
+            {% endfor %}
+
+            {% endfor %}
+
+            {% endif %}
+
+            {% endfor %}
+            <br />
+            <div class="row">
+              <div class="col-sm-12">
+                <h4 class="meta">recommended experience</h4>
+                <h3 class="meta-value">ALL LEVELS</h3>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col my-5 text-sm-left product-content">
+        {% for collection in collections %}
+        {% if product.title == collection.title %}
+
+        <p>{{ collection.description }}</p>
+
+        {% endif %}
+        {% endfor %}
+
+        <br />
+
+        <div class="fine-print"><strong>NOTE:</strong>All sales are final and we do not offer refunds. To change or reschedule your booking, please view our full <a href="https://baristaschoolperth.com.au/terms-conditions/">terms & conditions</a> before purchasing.</div>
+      </div>
+    </div>
+
+    {% for collection in collections %}
+    {% if product.title == collection.title %}
+    {% for product in collection.products %}
+
+    <div class="row">
+      <div class="col">
+
+        {% for variant in product.variants %}
+
+        <br />
+
+        <div class="section-head">
+          <h2 class="section-title small">choose your schedule for {{ product.title }}</h2>
+        </div>
+
+        <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+        <meta itemprop="price" content="{{ variant.price | divided_by: 100.00 }}">
+        <span itemprop="availability" style="display:none"> {% if variant.available %}In Stock{% else %}Out Of
+          Stock{% endif %}"</span>
+
+        <form action="/cart/add" method="post" enctype="multipart/form-data">
+          <div class="tile mb-7">
+            <div class="form-row">
+              <div class="col-lg-7">
+                <div class="form-group">
+                  <label class="form-title">choose a date:</label>
+                  <div class="input-group mb-3 loading--bundleform">
+                    {% include 'booking-form-bundle' %}
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div class="form-group">
+                  <label class="form-title">Quantity</label>
+                  <input class="form-control bundle-quantity" type="number" id="{{product.id}}-quantity" name="quantity" value="1" min="1">
+                  <div class="bundle-quantity-left"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        {% endfor %}
+
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+
+    <br />
+
+    <div class="row">
+      <div class="col-lg-12" style="text-align:center;">
+        <div class="form-group">
+          <label class="form-title"> </label>
+          <button id="AddToCart" class="btn-main outline" type="submit" name="add" data-add-to-cart>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <a href="/pages/courses">Go back to Barista Courses</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+  function addToCart(event) {
+    if (typeof event !== 'undefined') event.preventDefault();
+
+    var forms = document.querySelectorAll('.booking-form');
+    var formCount = 0;
+
+    forms.forEach(function(form) {
+      formCount++;
+      $.ajax({
+        type: 'POST',
+        url: '/cart/add.js',
+        async: false,
+        data: {
+          quantity: $(document).find('#'+form.dataset.id+'-quantity').val(),
+          id: form.dataset.variantid,
+          properties: {
+            'Date': $(form).find('input').val(),
+            'Time': $(form).find('select').val()
+          }
+        },
+        dataType: 'json',
+        error: function(error) {
+          console.log(error);
+        },
+        success: function(response) {
+          formCount--;
+        },
+        cache: false
+      });
+    });
+
+    if (formCount === 0) {
+      window.location = '/cart';
+    }
+  }
+
+  var products = [];
+
+  
+  
+  
+
+  products.push({
+    variantId: 17899131666499,
+    variantAvailable: true
+  });
+
+  
+
+  products.push({
+    variantId: 17899111022659,
+    variantAvailable: true
+  });
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  var cartButton = document.querySelector('#AddToCart');
+
+  var outOfStock = [];
+
+//   products.forEach(function(product) {
+//     if (!product.variantAvailable) {
+//       outOfStock.push(true);
+//     }
+//   });
+  
+  var foundTrue = false;
+  for(var m2=0;m2<outOfStock.length;m2++) {
+     var outOfStockValue = outOfStock[m2];
+    if(outOfStockValue === true)
+    {
+       foundTrue = true;
+      break;
+    }
+  }
+  
+  
+  
+  if (foundTrue) {
+    cartButton.innerHTML = 'Out of stock';
+  } else {
+    cartButton.innerHTML = 'Add to cart';
+  }
+  
+
+//   if (outOfStock.includes(true)) {
+//     cartButton.innerHTML = 'Out of stock';
+//   } else {
+//     cartButton.innerHTML = 'Add to cart';
+//   }
+
+  cartButton.addEventListener('click', addToCart);
+  cartButton.addEventListener('touch', addToCart);
+
+  setInterval(function() {
+    document.querySelectorAll('.booking-form').forEach(function(form) {
+      if (form.style !== '') {
+        form.style = '';
+      }
+    });
+  }, 10 / 1000);
+
+  function defer(method) {
+    if (window.jQuery) {
+      method();
+    } else {
+      setTimeout(function() { defer(method) }, 50);
+    }
+  }
+  
+  function fixTime(time){
+   
+    time = time.split(':'); // convert to array
+
+    // fetch
+    var hours = Number(time[0]);
+    var minutes = Number(time[1]);
+    var seconds = Number(time[2]);
+
+    // calculate
+    var timeValue;
+
+    if (hours > 0 && hours <= 12) {
+      timeValue= "" + hours;
+    } else if (hours > 12) {
+      timeValue= "" + (hours - 12);
+    } else if (hours == 0) {
+      timeValue= "12";
+    }
+
+    timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+//     timeValue += (seconds < 10) ? ":0" + seconds : ":" + seconds;  // get seconds
+    timeValue += (hours >= 12) ? " pm" : " am";  // get AM/PM
+    
+    return timeValue;
+    
+  }
+
+  defer(function() {
+    document.querySelectorAll('.booking-form input.datepicker').forEach(function(form) {
+      let schedule = [];
+
+      $.getJSON('https://baristaschool.bookthatapp.com/availability/schedule.json?callback=?', {
+        start: new Date().toISOString().split('T')[0],
+        end: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+        handle: 'booking-start-' + form.dataset.handle,
+        variant: form.dataset.btaVariantConfig
+      }, function(data) {
+        
+        console.log('Data Schedule Is:');
+        console.log(data.schedule);
+        data.schedule.forEach(function(value) {
+          let year = value.start[0].toString();
+          let month = (value.start[1].toString().length === 1) ? '0' + value.start[1].toString() : value.start[1].toString();
+          let day = (value.start[2].toString().length === 1) ? '0' + value.start[2].toString() : value.start[2].toString();
+          let hour = value.start[3].toString();
+          let minute = (value.start[4].toString().length === 1) ? '0' + value.start[4].toString() : value.start[4].toString();
+
+          let date = year + '-' + month + '-' + day;
+          let time = hour + ':' + minute;
+          
+          let remainingSpots = value.remainingSpaces;
+          
+          if(!value.bookedOut) {
+            schedule.push({
+              date: date,
+              time: time,
+              spots: remainingSpots
+            });
+          }
+
+        });
+
+      }).then(function() {
+        setTimeout(function() {
+
+          var oldOptions = $(form).datepicker('option');
+          $(form).datepicker( "destroy" );
+
+          
+          $(form).datepicker({
+            beforeShowDay: function (date){
+              
+              for(var i = 0; i < schedule.length; i++) {
+                let item = schedule[i];
+                
+                let newDay = new Date(item.date);
+                newDay.setDate(newDay.getDate() - 1);
+                
+                if (date.toISOString().split('T')[0] == newDay.toISOString().split('T')[0]) {
+                  return [true, ''];
+                }
+                
+                
+              }
+
+              return [false, ''];
+            },
+            onSelect: function (value) {
+              const dateArray = value.split('/');
+              const date = dateArray[2].toString() + '-' + dateArray[1].toString() + '-' + dateArray[0].toString();
+
+              var matches = [];
+              for(var i=0; i<schedule.length; i++)
+              {
+                var o = schedule[i];
+                if (o.date == date) {
+                  matches.push(o);
+                  var quantityInput = $(this).closest('form').find('.bundle-quantity');
+                  
+                  var spotValue = $(this).closest('form').find('.bundle-quantity-left');
+                  
+                  var sOrNot = (o.spots<1) ? '' : 's';
+                  
+                  spotValue.text(o.spots + ' spot' + sOrNot + ' left');
+                  
+                  quantityInput.attr('max', o.spots);
+                  if(parseInt(quantityInput.val()) > parseInt(o.spots))
+                  {
+                   	quantityInput.val(o.spots); 
+                  }
+                  
+                  console.log("this = ", this);
+                  console.log('If available: ' + o.spots, $(this).closest('form').find('.bundle-quantity').length);
+                }
+                
+              }
+        
+//               console.log('Found Matches ', date, schedule);
+//               console.log(matches);
+              
+              $(form).next().html('');
+              for(var n=0; n<matches.length; n++)
+              {
+                var match = matches[n];
+                var t = fixTime(match.time);
+                console.log('new time: ' + t);
+                
+                $(form).next().append('<option value="' + match.time + '">' + t + '</option>');
+              }
+            }
+            
+
+           });
+   
+          $('.loading--bundleform').addClass('datepicker--loaded');
+          
+          updateWithData($(form).val(), form);
+          
+        }, 3000);
+
+      });
+    });
+  });
+
+  
+
+ function updateWithDate (value, form) {
+    const dateArray = value.split('/');
+    const date = dateArray[2].toString() + '-' + dateArray[1].toString() + '-' + dateArray[0].toString();
+
+              var matches = [];
+              for(var i=0; i<schedule.length; i++)
+              {
+                var o = schedule[i];
+                if (o.date == date) {
+                  matches.push(o);
+                  var quantityInput = $(this).closest('form').find('.bundle-quantity');
+                  
+                  quantityInput.attr('max', o.spots);
+                  if(parseInt(quantityInput.val()) > parseInt(o.spots))
+                  {
+                   	quantityInput.val(o.spots); 
+                  }
+                  console.log("this = ", this);
+                  console.log('If available: ' + o.spots, $(this).closest('form').find('.bundle-quantity').length);
+                }
+                
+              }
+        
+
+              
+              $(form).next().html('');
+              for(var n=0; n<matches.length; n++)
+              {
+                var match = matches[n];
+                var t = fixTime(match.time);
+                console.log('new time: ' + t);
+                
+                $(form).next().append('<option value="' + match.time + '">' + t + '</option>');
+              }
+}
+  
+  
+  
+</script>
+
+
+<!-- YOU CAN TOUCH THIS -->
+
+{% elsif tag == 'product' %}
+
+
+<script>
+function addToCart(variantId) {
+    $.ajax({
+        type: 'POST',
+        url: '/cart/add.js',
+        async: false,
+        data: {
+          quantity: parseInt($('#Quantity').val()),
+          id: variantId
+        },
+        dataType: 'json',
+        error: function(error) {
+          console.log(error);
+        },
+        success: function(response) {
+          window.location = '/cart';
+        },
+        cache: false
+      });
+    
+
+    
+}
+
+
+console.log('my product', {{ product | json}}, {{ product.options_with_values | json}});
+
+var myProduct = {{ product | json }};
+var myProductOptions = {{ product.options_with_values | json}};
+
+
+function myMethod() {
+
+      $('.single-product-page form').submit(function (e) {
+        e.preventDefault();
+        var myChoices = $('.custom-select');
+        var myChoicesValues = {};
+
+        myChoices.each(function() {
+          myChoicesValues[$(this).attr('id').toLowerCase()] = $(this).val();
+        });
+        console.log('My Choices', myChoicesValues);
+        var foundVariant = undefined;
+        for(var i=0; i < myProduct.variants.length; i++) {
+          var variant = myProduct.variants[i];
+
+          var foundAllMatch = true;
+          console.log("---------------------------------------------");
+          console.log("variant: " + variant.id);
+
+          for(var j in myChoicesValues) {
+            var choiceValue = myChoicesValues[j];
+            console.log("..... choice: " + choiceValue);
+            var foundMatch = false;
+            for(var k = 0; k < variant.options.length; k++) {
+              var vO = variant.options[k];
+              console.log("............: " + vO);
+              if(vO === choiceValue) {
+                foundMatch = true;
+                console.log("............: FOUND!!! " + vO );
+                break;
+              }
+            }
+
+            if(foundMatch == false)
+            {
+              foundAllMatch = false;
+              break;
+            }
+          }
+
+          console.log("foundAllMatch: " + (foundAllMatch ? " YES " : " NO "));
+          
+          if(foundAllMatch == true)
+          {
+            foundVariant = variant;
+            break;
+          }
+
+        }
+        console.log("FOUND VARIANT", foundVariant);
+        if(foundVariant != undefined) {
+          // add to cart
+          addToCart(foundVariant.id);
+        }
+
+      });
+}
+
+var myInterval = setInterval(function ()
+{
+  if(typeof window.jQuery != "undefined")
+  {
+    myMethod();
+    clearInterval(myInterval);
+  }
+}, 300);
+
+
+
+  
+
+
+
+
+
+</script>
+
+
+
+
+
+
+<div class="content single-product-page">
+  <div class="section container w-line">
+    <div class="row">
+      <div class="col">
+      <div class="head-feature">
+        <div class="feature-image">
+        {% if featured_image != blank %}
+        <img src="{{ featured_image | img_url: '480x480' }}" alt="{{ featured_image.alt | escape }}"
+           data-product-featured-image>
+        {%else%}
+        <img src="assets/img/cart-icon-1.png" alt="">
+        {% endif %}
+
+        {% if product.images.size > 1 %}
+        <ul>
+          {% for image in product.images %}
+          <li>
+          <a href="{{ image.src | img_url: '480x480' }}" data-product-single-thumbnail>
+            <img src="{{ image.src | img_url: '160x160' }}" alt="{{ image.alt | escape }}">
+          </a>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        </div>
+        <div class="feature-details ml-md-5">
+        <h3 class="main-title">{{ product.title }}</h3>
+        
+        <div>
+           <p class="price"{%- unless product.price_varies %} id="productPrice"{%- endunless -%}>
+           {%- if linklists[product.handle].links.size == 0 -%}
+             {%- if product.price_varies -%}
+             {{ product.price_min | money }} – {{ product.price_max | money }}
+             {%- elsif on_sale -%}<del id="old-product-price">{{current_variant.compare_at_price | money }}</del> <ins id="product-price">{{ current_variant.price | money }}</ins>
+             {%- else -%}
+             <span id="product-price">{{ current_variant.price | money }}</span> 
+             {%- endif -%}
+           {%- else -%}
+             {%- if on_sale -%}
+             {{ current_variant.price | money }} – {{ current_variant.compare_at_price | money }}
+             {%- else -%}
+             {{ current_variant.price | money }}
+             {%- endif -%}
+           {%- endif -%}
+           </p>
+        </div>
+        
+        <div class="product-single__description rte">
+          {{ product.description }}
+         </div>
+                {% form 'product', product, data-product-form: '', data-product-handle: product.handle, data-enable-history-state: 'true' %}
+                {% unless product.has_only_default_variant %}
+                    <div class="grid">
+                      {% for option in product.options_with_values %}
+                        <div class="grid__item medium-up--one-third">
+                          <div class="option__wrapper">
+                            
+                            <label class="option__title" for="Option{{ option.position }}">
+                                {{ option.name }}
+                            </label>
+                            <select
+                              id="Option{{ option.position }}"
+                              class="custom-select"
+                              name="options[{{ option.name | escape }}]">
+                              {% for value in option.values %}
+                                <option
+                                  value="{{ value | escape }}"
+                                  {% if option.selected_value == value %}selected="selected"{% endif %}>
+                                    {{ value }}
+                                </option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% endunless %}
+                  <noscript>
+                    <select name="id" class="custom-select">
+                      {% for variant in product.variants %}
+                        <option
+                          {% if variant == current_variant %}selected="selected"{% endif %}
+                          {% unless variant.available %}disabled="disabled"{% endunless %}
+                          value="{{ variant.id }}">
+                            {{ variant.title }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </noscript>
+                  <div class="grid">
+                    <div class="grid__item medium-up--one-half">
+                      <div class="quantity__wrapper">
+                        <label class="option__title" for="Quantity">{{ 'products.product.quantity' | t }}</label>
+                        <input class="form__input" type="number" id="Quantity" name="quantity" value="1" min="1">
+                      </div>
+                    </div>
+                    <div class="grid__item medium-up--one-half">
+
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    id="AddToCart"
+                    name="add"
+                    class="button"
+                    data-submit-button
+                    {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+                      <span data-submit-button-text>
+                        {% if current_variant.available %}
+                          {{ 'products.product.add_to_cart' | t }}
+                        {% else %}
+                          {{ 'products.product.sold_out' | t }}
+                        {% endif %}
+                      </span>
+                  </button>
+                {% endform %}
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+    
+<div class="content">
+  <div class="section container w-line">
+    <div class="row">
+      <div class="col">
+        <div class="head-feature">
+          <div class="feature-image">
+            {% if featured_image != blank %}
+            <img src="{{ featured_image | img_url: '480x480' }}" alt="{{ featured_image.alt | escape }}"
+                 data-product-featured-image>
+            {%else%}
+            <img src="assets/img/cart-icon-1.png" alt="">
+            {% endif %}
+
+            {% if product.images.size > 1 %}
+            <ul>
+              {% for image in product.images %}
+              <li>
+                <a href="{{ image.src | img_url: '480x480' }}" data-product-single-thumbnail>
+                  <img src="{{ image.src | img_url: '160x160' }}" alt="{{ image.alt | escape }}">
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+
+          </div>
+          <div class="feature-details ml-md-5">
+            <h3 class="main-title">{{ product.title }}</h3>
+            <div class="row">
+              <div class="col-sm-4">
+                <h4 class="meta">duration</h4>
+                <h3 class="meta-value">{{ current_variant.title }}</h3>
+              </div>
+              <div class="col-sm-4">
+                <h4 class="meta">cost per person</h4>
+                <h3 class="meta-value">{{ current_variant.price | money }}
+
+                  {% if product.compare_at_price_max > product.price %}
+                  <span class="visually-hidden" data-compare-text>{{ 'products.product.regular_price' | t }}</span>
+                  <s data-compare-price>
+                    {% if current_variant.compare_at_price > current_variant.price %}
+                    {{ current_variant.compare_at_price | money }}
+                    {% endif %}
+                  </s>
+                  {% endif %}
+
+                </h3>
+              </div>
+              {% if product.url == '/products/advanced-barista' %}
+              	{% capture recom_exp %}EXPERIENCED / PROGRESSIVE COURSE{% endcapture %}
+              {% else %}
+                {% capture recom_exp %}ALL LEVELS{% endcapture %}
+              {% endif %}
+              <div class="col-sm-4">
+                <h4 class="meta">recommended experience</h4>
+                <h3 class="meta-value">{{recom_exp}}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+{% if product.url contains "coffee-fundamentals" or product.url contains "fast-track-barista" or product.url contains "latte-art" %}
+
+    <div class="row">
+      <div class="col my-5 text-sm-left product-content">
+        <p>{{ product.description }}</p>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col">
+          
+        <div class="section-head">
+          <h2 class="section-title small">choose your schedule</h2>
+        </div>
+        <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+        <meta itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
+        <span itemprop="availability" style="display:none"> {% if current_variant.available %}In Stock{% else %}Out Of Stock{% endif %}"</span>
+
+        <form action="/cart/add" method="post" enctype="multipart/form-data">
+          {% unless product.has_only_default_variant %}
+          {% for option in product.options_with_values %}
+
+          <div class="selector-wrapper js" style="display:none">
+            <label for="SingleOptionSelector-{{ forloop.index0 }}">
+              {{ option.name }}
+            </label>
+            <select style="display:none" id="SingleOptionSelector-{{ forloop.index0 }}" data-single-option-selector
+                    data-index="option{{ option.position }}">
+              {% for value in option.values %}
+              <option value="{{ value | escape }}" {% if option.selected_value==value %}selected="selected" {% endif %}>
+                {{ value }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          {% endfor %}
+          {% endunless %}
+
+
+          <select name="id" class="no-js visually-hidden" style="display:none" data-product-select>
+            {% for variant in product.variants %}
+            <option {% if variant==current_variant %}selected="selected" {% endif %} {% unless variant.available
+                  %}disabled="disabled" {% endunless %} value="{{ variant.id }}">
+              {{ variant.title }}
+            </option>
+            {% endfor %}
+          </select>
+
+          <div class="tile mb-5">
+            <div class="form-row">
+
+              <div class="col-lg-7">
+                <div class="form-group">
+                  <label class="form-title">choose a date:</label>
+                  <div class="input-group mb-3">
+                    {% include 'booking-form' %}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-lg-2">
+                <div class="form-group">
+                  <label class="form-title">Quantity</label>
+                  <input class="form-control" type="number" id="Quantity" name="quantity" value="1" min="1">
+                </div>
+              </div>
+              
+              <div class="col-lg-3">
+                <div class="form-group form-button-block">
+                  <label class="form-title"> </label>
+                  <button class="btn-main outline" type="submit" name="add" data-add-to-cart {% unless
+                        current_variant.available %}disabled="disabled" {% endunless %}>
+                    {% if current_variant.available %}
+                    {{ 'products.product.add_to_cart' | t }}
+                    {% else %}
+                    {{ 'products.product.sold_out' | t }}
+                    {% endif %}
+                  </button>
+                  <div class="num_of_spots_left"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 my-4">
+          <div class="fine-print">
+              {{ product.metafields.global.notes }} 
+          </div>
+      </div>
+      <div class="col-12">
+          <div class="sing-prod-desc">
+            {{ product.metafields.global.bottom_description }}
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+
+    <div class="row">
+      <div class="col my-5 text-sm-left product-content">
+        <p>{{ product.description }}</p>
+        <div class="fine-print"><strong>NOTE:</strong>All sales are final and we do not offer refunds. To change or reschedule your booking, please view our full <a href="https://baristaschoolperth.com.au/terms-conditions/">terms & conditions</a> before purchasing.</div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col">
+          
+        <div class="section-head">
+          <h2 class="section-title small">choose your schedule</h2>
+        </div>
+        <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+        <meta itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
+        <span itemprop="availability" style="display:none"> {% if current_variant.available %}In Stock{% else %}Out Of Stock{% endif %}"</span>
+
+        <form action="/cart/add" method="post" enctype="multipart/form-data">
+          {% unless product.has_only_default_variant %}
+          {% for option in product.options_with_values %}
+
+          <div class="selector-wrapper js" style="display:none">
+            <label for="SingleOptionSelector-{{ forloop.index0 }}">
+              {{ option.name }}
+            </label>
+            <select style="display:none" id="SingleOptionSelector-{{ forloop.index0 }}" data-single-option-selector
+                    data-index="option{{ option.position }}">
+              {% for value in option.values %}
+              <option value="{{ value | escape }}" {% if option.selected_value==value %}selected="selected" {% endif %}>
+                {{ value }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          {% endfor %}
+          {% endunless %}
+
+
+          <select name="id" class="no-js visually-hidden" style="display:none" data-product-select>
+            {% for variant in product.variants %}
+            <option {% if variant==current_variant %}selected="selected" {% endif %} {% unless variant.available
+                  %}disabled="disabled" {% endunless %} value="{{ variant.id }}">
+              {{ variant.title }}
+            </option>
+            {% endfor %}
+          </select>
+
+          <div class="tile mb-5">
+            <div class="form-row">
+
+              <div class="col-lg-7">
+                <div class="form-group">
+                  <label class="form-title">choose a date:</label>
+                  <div class="input-group mb-3">
+                    {% include 'booking-form' %}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-lg-2">
+                <div class="form-group">
+                  <label class="form-title">Quantity</label>
+                  <input class="form-control" type="number" id="Quantity" name="quantity" value="1" min="1">
+                </div>
+              </div>
+              
+              <div class="col-lg-3">
+                <div class="form-group form-button-block">
+                  <label class="form-title"> </label>
+                  <button class="btn-main outline" type="submit" name="add" data-add-to-cart {% unless
+                        current_variant.available %}disabled="disabled" {% endunless %}>
+                    {% if current_variant.available %}
+                    {{ 'products.product.add_to_cart' | t }}
+                    {% else %}
+                    {{ 'products.product.sold_out' | t }}
+                    {% endif %}
+                  </button>
+                  <div class="num_of_spots_left"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col">
+        <div class="section-head">
+          <h2 class="section-title small">bundle booking available</h2>
+        </div>
+        <div class="row">
+          <div class="col-md">
+            <div class="tile row thin">
+              <div class="tile-content">
+                <h3 class="title">Bring a friend</h3>
+                <p class="tile-text">Bring a friend or friends to our beginners Coffee Fundamental class and receive
+                  <strong>$10 off each</strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="tile row thin">
+              <div class="tile-content">
+                <h3 class="title">BUNDLE ONE</h3>
+                <p class="tile-text">Book our Coffee Fundamentals and Advanced workshop and save <strong>$50.00</strong>.</p>
+                <a href="/products/bundle-one" class="tile-link">Add this Bundle</a>
+              </div>
+            </div>
+            <div class="fine-print"><i>*Automatically calculates at checkout </i></div>
+          </div>
+          <div class="col-md">
+            <div class="tile row thin">
+              <div class="tile-content">
+                <h3 class="title">BUNDLE TWO</h3>
+                <p class="tile-text">Book our Coffee Fundamentals, Advanced, and Coffee Latte workshops and save <strong>$75.00</strong>.</p>
+                <a href="/products/bundle-two" class="tile-link">Add this Bundle</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-12 my-4">
+        <p><strong class="small-title">Others:</strong> Certificate of Completion signed by barista trainer, unlimited
+          milk & coffee & workshop notes.</p>
+      </div>
+      <div class="col-12">
+        <a href="/pages/courses" class="btn-main">View Other Courses</a>
+      </div>
+      <div class="col-12">
+        <!--a href="/pages/courses">Go back to Barista Courses</a-->
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+{% endif %}
+{% endfor %}
+
+{% schema %}
+{
+"name": "Product pages",
+"settings": [{
+"type": "checkbox",
+"id": "show_share_buttons",
+"label": "Show social sharing buttons",
+"default": true
+}]
+}
+{% endschema %}

@@ -1,0 +1,27 @@
+<?php
+
+
+
+
+class admin {
+
+    public $col_a;
+    public $col_b;
+
+    function __construct($val_a, $val_b) {
+        $this->col_a = $val_a;
+        $this->col_b = $val_b;
+    }
+
+}
+
+
+$athena = new admin;
+
+echo $athena('eve', 'bevs');
+
+
+
+
+
+?>
