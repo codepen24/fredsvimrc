@@ -187,20 +187,20 @@ set ai
 " -------- netrw settings -----------
 " -----------------------------------
 let g:netrw_banner = 1
-let g:netrw_liststyle = 0 
+let g:netrw_liststyle = 3 
 let g:netrw_browse_split = 3 
 let g:netrw_altv= 1
 let g:netrw_winsize = 24 
 
-" " -----------------------------------
-" " netrw auto create side navigation just like :Lex command ..
-" " -----------------------------------
-" augroup ProjectDrawer
-"     autocmd!
-"     "autocmd VimEnter * :Vexplore
-"     autocmd VimEnter * :Lex
-" augroup END
-" ==================================
+" -----------------------------------
+" netrw auto create side navigation just like :Lex command ..
+" -----------------------------------
+augroup ProjectDrawer
+autocmd!
+"autocmd VimEnter * :Vexplore
+autocmd VimEnter * :cd /c/wamp64/www/devs | :Lex
+augroup END
+" ===================================
 
 
 
@@ -331,11 +331,6 @@ function! CallBashrc()
 endfunction
 nmap ,bs :call CallBashrc() 
 
-function! WwwPath()
-    :cd /c/wamp64/www/devs | :e.
-endfunction
-nmap ,w :call WwwPath()<CR> 
-
 set background=dark 
 set t_Co=256
 
@@ -344,12 +339,15 @@ set t_Co=256
 "endif
 
 
-call plug#begin("~/.vim/plugged")
 "call plug#begin("~/.config/nvim/plugged")
+"call plug#begin(stdpath('data'))
+call plug#begin("~/.vim/plugged")
 
 Plug 'ap/vim-css-color'
 Plug 'scrooloose/syntastic'  
+
 Plug 'vim-airline/vim-airline' 
+Plug 'vim-airline/vim-airline-themes' 
 
 Plug 'Yggdroot/indentLine' 
 
@@ -419,8 +417,6 @@ let g:gruvbox_contrast_dark = 'soft'
 " Plug 'arnaud-lb/vim-php-namespace'
 " 
 " Plug 'preservim/nerdtree'
-" Plug 'vim-airline/vim-airline' 
-" Plug 'vim-airline/vim-airline-themes' 
 " Plug 'vim-scripts/grep.vim'  
 " Plug 'gorodinskiy/vim-coloresque'  
 " Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']} 
@@ -703,9 +699,15 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 " ------------
 " Vim Airline
 " ------------
+
+
+
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
+
+let g:airline#extensions#tabline#left_sep = '▶'
+let g:airline#extensions#tabline#left_alt_sep = '|'
 
 let g:airline#extensions#tabline#left_sep = '▶'
 let g:airline#extensions#tabline#left_alt_sep = '|'
@@ -734,6 +736,9 @@ let g:airline_symbols.linenr = ''
 
 
 let g:airline#extensions#tabline#enabled = 1
+
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'base16_gruvbox_dark_hard'
 
 " ================================================
 
