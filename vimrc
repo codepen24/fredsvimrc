@@ -72,7 +72,7 @@ set titleold="Terminal"
 set titlestring=%F
 
 " Status line
-set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
+set statusline=%F%M%r%H%W%=(%{&ff}/%y)\ (line\ %l\/%L,\ col\ %c)\
 
 set autochdir
 autocmd BufEnter * silent! lcd %:p:h
@@ -174,7 +174,7 @@ set completeopt-=preview " Disabled by default because preview makes the window 
 let mapleader =','
 
 "" Set leader to \ or <Space> use have a plugin you created
-"let localmapleader = '\<Space>'
+let localmapleader = ','
 
 let g:netrw_dirhistmax=0 "disable it from creating netrw file
 let no_buffers_menu=1
@@ -187,7 +187,7 @@ set ai
 " -------- netrw settings -----------
 " -----------------------------------
 let g:netrw_banner = 1
-let g:netrw_liststyle = 3 
+let g:netrw_liststyle = 0
 let g:netrw_browse_split = 3 
 let g:netrw_altv= 1
 let g:netrw_winsize = 24 
@@ -196,9 +196,9 @@ let g:netrw_winsize = 24
 " netrw auto create side navigation just like :Lex command ..
 " -----------------------------------
 augroup ProjectDrawer
-autocmd!
-"autocmd VimEnter * :Vexplore
-autocmd VimEnter * :cd /c/wamp64/www/devs | :Lex
+    autocmd!
+    "autocmd VimEnter * :Vexplore
+    autocmd VimEnter * :cd /c/wamp64/www/devs | :Lex
 augroup END
 " ===================================
 
@@ -224,6 +224,8 @@ set noequalalways
 "" inoremap { {}<left>
 "" inoremap {<CR> {<CR>}<ESC>O
 "" inoremap {;<CR> {<CR>};<ESC>O
+
+
 
 
 vmap ,k zfzc
@@ -302,6 +304,11 @@ vmap ,i 0
 
 " :ab brck {} 
 
+function! Ww()
+    :cd /c/wamp64/www/devs | :e.
+endfunction
+nmap ,w :call Ww()<CR>
+
 function! ScrollStop(key)
     if &buftype !=# "terminal"
         execute 'normal! ' . nr2char(and(char2nr(a:w), "0b0011111"))
@@ -361,7 +368,8 @@ call plug#end()
 " Gruvbox color scheme
 " --------------------
 colorscheme gruvbox
-let g:gruvbox_contrast_dark = 'soft'
+let g:gruvbox_contrast_dark = 'Dark'
+let g:gruvbox_contrast_dark = 'Hard'
 " ====================
 
 
